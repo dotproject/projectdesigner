@@ -113,21 +113,21 @@ foreach ($config_options as $key=>$value){
 		<?php
     // the key starts with hr, then just display the value
 	  if(substr($key,0,7)=='heading'){ ?>
-		  <th align="center" colspan="2"><? echo $value?></th>
+		  <th align="center" colspan="2"><?php echo $value?></th>
 		<?php } else { ?>
-		<td align="right"><? echo $value['description']?></td>
+		<td align="right"><?php echo $value['description']?></td>
 		<td><?php
       switch($value['type']){
         case 'checkbox': ?>
-          <input type="checkbox" name="<? echo $key?>" <? echo $value['value']?"checked=\"checked\"":""?>>
+          <input type="checkbox" name="<?php echo $key?>" <?php echo $value['value']?"checked=\"checked\"":""?>>
           <?php
           break;
         case 'text': ?>
-          <input type="text" name="<? echo $key?>" style="<? echo $value['style']?>" value="<? echo $value['value']?>">
+          <input type="text" name="<?php echo $key?>" style="<?php echo $value['style']?>" value="<?php echo $value['value']?>">
           <?php
           break;
         case 'longtext': ?>
-          <input type="text" size="70" name="<? echo $key?>" style="<? echo $value['style']?>" value="<? echo $value['value']?>">
+          <input type="text" size="70" name="<?php echo $key?>" style="<?php echo $value['style']?>" value="<?php echo $value['value']?>">
           <?php
           break;
         case 'select': 
@@ -150,8 +150,8 @@ foreach ($config_options as $key=>$value){
 }
 ?>
 	<tr>
-		<td colspan="2" align="right"><input type="Submit" name="Cancel" value="<? echo $AppUI->_('back')?>">
-                                  <input type="Submit" name="Save" value="<? echo $AppUI->_('save')?>"></td>
+		<td colspan="2" align="right"><input type="Submit" name="Cancel" value="<?php echo $AppUI->_('back')?>">
+                                  <input type="Submit" name="Save" value="<?php echo $AppUI->_('save')?>"></td>
 	</tr>
 </table>
 </form>
