@@ -1,4 +1,4 @@
-<?php /* PROJECTDESIGNER $Id: index.php,v 1.0 2006/10/17 21:48:15 pedroix Exp $ */
+<?php /* PROJECTDESIGNER $Id: index.php,v 1.1 2007/03/15 18:16:42 pedroix Exp $ */
 /*  Copyright (c) 2007 Pedro A. (dotProject Development Team Member)
     THIS MODULE WAS SPONSORED BY DUSTIN OF PURYEAR-IT.COM
 
@@ -19,6 +19,9 @@
     along with dotProject; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
+if (!defined('DP_BASE_DIR')){
+  die('You should not access this file directly');
+}
 global $AppUI, $dPconfig;
 // check permissions for this module
 $perms =& $AppUI->acl();
@@ -29,9 +32,10 @@ if (!$canView) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$base = $dPconfig['base_url'];
-if ( substr($base, -1) != '/')
+$base = DP_BASE_URL;
+if ( substr($base, -1) != '/') {
       $base .= '/';
+}
 echo"<style type=\"text/css\">@import url({$base}modules/$m/jscalendar/calendar-win2k-1.css);</style>";
 echo "<script type=\"text/javascript\" src=\"{$base}modules/$m/jscalendar/calendar.js\"></script>\n";
 echo "<script type=\"text/javascript\" src=\"{$base}modules/$m/jscalendar/lang/calendar-en.js\"></script>\n";
@@ -116,11 +120,8 @@ if (!$project_id) {
             <tr>
             	<td nowrap style="border: outset #eeeeee 1px;background-color:#fffff" >
             		<font color="<?php echo bestColor( '#ffffff' ); ?>">
-            			<strong><?php echo $AppUI->_('Project');?>: <?php echo arraySelect( $projects, 'project_id','class="text" style="width:500px"', 0  );?></strong>
+            			<strong><?php echo $AppUI->_('Project');?>: <?php echo arraySelect( $projects, 'project_id','onchange="submitIt()" class="text" style="width:500px"', 0  );?></strong>
             		</font>
-            	</td>
-            	<td width="30" style="border: outset #eeeeee 1px;background-color:#fffff" >
-      			<input type="button" class="button" value="<?php echo $AppUI->_( 'go design' );?>" onclick="submitIt()" />
             	</td>
             </tr>            
             </form>
@@ -756,7 +757,7 @@ var oldProj = "<?php echo $obj->project_name.':';?>";
 	<td colspan="2" class="hilite">
 	<?php
             if ($canEditTasks) {
-                 require "vw_actions.php";
+                  require(dPgetConfig('root_dir')."/modules/projectdesigner/vw_actions.php");
             } else {
                   echo $AppUI->_('You do not have permission to edit tasks');
             }
@@ -800,7 +801,7 @@ var oldProj = "<?php echo $obj->project_name.':';?>";
 	<td colspan="2" class="hilite">
 	<?php
             if ($canAddTasks) {
-                 require "vw_addtasks.php";
+                  require(dPgetConfig('root_dir')."/modules/projectdesigner/vw_addtasks.php");
             } else {
                   echo $AppUI->_('You do not have permission to add tasks');
             }
@@ -846,7 +847,7 @@ var oldProj = "<?php echo $obj->project_name.':';?>";
 	      //Permission check here
             $canViewFiles = $perms->checkModule( 'files', 'view');
             if ($canViewFiles) {
-                 require "vw_files.php";
+                  require(dPgetConfig('root_dir')."/modules/projectdesigner/vw_files.php");
             } else {
                   echo $AppUI->_('You do not have permission to view files');
             }
