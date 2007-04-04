@@ -38,7 +38,7 @@
 "taskValidEndDate"=>"Please enter a valid end date",
 "You do not have permission to view tasks",
 "Gantt Chart",
-"You do not have permission to edit tasks"
+"You do not have permission to edit tasks",
 "Tasks",
 "Actions",
 "Add Tasks",
