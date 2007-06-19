@@ -36,7 +36,7 @@ foreach ($elements as $element => $on) {
             }
             $tline->task_end_date = $end_date;
             $tline->task_duration = $elements['add_task_duration_'.$on];
-            $tline->task_duration_type = '1';
+            $tline->task_duration_type = $elements['add_task_durntype_'.$on];
             $tline->task_priority = $elements['add_task_priority_'.$on];
             $tline->task_type = $elements['add_task_type_'.$on];
             $tline->task_access = $elements['add_task_access_'.$on];

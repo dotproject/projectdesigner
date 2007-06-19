@@ -119,7 +119,7 @@ function isInArray(myArray, intValue) {
 /**
 * @modify_reason calculating duration does not include time information and cal_working_days stored in config.php
 */
-function calcDuration(form,start_date,end_date,duration_fld) {
+function calcDuration(form,start_date,end_date,duration_fld,durntype_fld) {
 
 	var int_st_date = new String(start_date.value);
 	var int_en_date = new String(end_date.value);
@@ -156,7 +156,7 @@ function calcDuration(form,start_date,end_date,duration_fld) {
 	
 	//could be 1 or 24 (based on TaskDurationType value) - We'll consider it 1 = hours
 	//var durnType = parseFloat(f.task_duration_type.value);	
-	var durnType = parseFloat(1);	
+	var durnType = parseFloat(durntype_fld.value);	
 	durn /= durnType;
 	//alert(durn);
 	if (durnType == 1){
@@ -200,12 +200,13 @@ function calcDuration(form,start_date,end_date,duration_fld) {
 		//we should talk about working days so a task duration of 41 hrs means 6 (NOT 5) days!!!
 		if (durn > Math.round(durn))
 			durn++;
-		}
+	}
 
-	if ( s > e )
-		alert( 'End date is before start date!');
-	else
+	if ( s > e ) {
+		//alert( 'End date is before start date!');
+	} else {
 		duration_fld.value = Math.round(durn);
+	}
 }
 /**
 * Get the end of the previous working day 

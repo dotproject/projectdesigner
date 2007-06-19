@@ -14,6 +14,7 @@ $bulk_task_other = dPgetParam( $_POST, 'bulk_task_other', '' );
 $bulk_task_owner = dPgetParam( $_POST, 'bulk_task_owner', '' );
 $bulk_task_type = dPgetParam( $_POST, 'bulk_task_type', '' );
 $bulk_task_duration = dPgetParam( $_POST, 'bulk_task_duration', '' );
+$bulk_task_durntype = dPgetParam( $_POST, 'bulk_task_durntype', '');
 $bulk_task_start_date = dPgetParam( $_POST, 'add_task_bulk_start_date', '' );
 if ($bulk_task_start_date) {
    $start_date = new CDate($bulk_task_start_date);
@@ -46,14 +47,14 @@ if (is_array($selected) && count( $selected )) {
 		}
 
 //Action: Modify Percent Complete
-		if ( isset($_POST['bulk_task_percent_complete']) && $bulk_task_percent_complete!='' && $bulk_task_percent_complete) {			
+		if ( isset($_POST['bulk_task_percent_complete']) && $bulk_task_percent_complete!='' && $bulk_task_percent_complete) {
 			if ($upd_task->task_id) {
 				$upd_task->task_percent_complete = $bulk_task_percent_complete;
 				$upd_task->store();
 			}
 		}
 
-//Action: Move Task Date		
+//Action: Move Task Date
 		if ( isset($_POST['bulk_move_date']) && $bulk_move_date!='' && $bulk_move_date) {
 			if ($upd_task->task_id && (intval($upd_task->task_dynamic)!=1 && !$upd_task->getDependencies($upd_task->task_id))) {
 			      $offSet = $bulk_move_date;
@@ -64,38 +65,38 @@ if (is_array($selected) && count( $selected )) {
                         $end_date->addDays($offSet);
                         $upd_task->task_end_date = $end_date->format(FMT_DATETIME_MYSQL);
 				$upd_task->store();
-                        $upd_task->shiftDependentTasks();				
+                        $upd_task->shiftDependentTasks();
 			}
 		}
 
-//Action: Modify Start Date		
-		if ( isset($_POST['add_task_bulk_start_date']) && $bulk_task_start_date!='' && $bulk_start_date) {			
+//Action: Modify Start Date
+		if ( isset($_POST['add_task_bulk_start_date']) && $bulk_task_start_date!='' && $bulk_start_date) {
 			if ($upd_task->task_id) {
 				$upd_task->task_start_date = $bulk_start_date;
 				$upd_task->store();
 			}
 		}
 
-//Action: Modify End Date		
-		if ( isset($_POST['add_task_bulk_end_date']) && $bulk_task_end_date!='' && $bulk_end_date) {			
+//Action: Modify End Date
+		if ( isset($_POST['add_task_bulk_end_date']) && $bulk_task_end_date!='' && $bulk_end_date) {
 			if ($upd_task->task_id) {
 				$upd_task->task_end_date = $bulk_end_date;
 				$upd_task->store();
 			}
 		}
 
-//Action: Modify Duration		
-		if ( isset($_POST['bulk_task_duration']) && $bulk_task_duration!='' && is_numeric($bulk_task_duration)) {			
+//Action: Modify Duration
+		if ( isset($_POST['bulk_task_duration']) && $bulk_task_duration!='' && is_numeric($bulk_task_duration)) {
 			if ($upd_task->task_id) {
 				$upd_task->task_duration = $bulk_task_duration;
                         //set duration type to hours (1)
-				$upd_task->task_duration_type = 1;
+				$upd_task->task_duration_type = $bulk_task_durntype ? $bulk_task_durntype : 1 ;
 				$upd_task->store();
 			}
 		}
 
-//Action: Modify Task Owner		
-		if ( isset($_POST['bulk_task_owner']) && $bulk_task_owner!='' && $bulk_task_owner) {			
+//Action: Modify Task Owner
+		if ( isset($_POST['bulk_task_owner']) && $bulk_task_owner!='' && $bulk_task_owner) {
 			if ($upd_task->task_id) {
 				$upd_task->task_owner = $bulk_task_owner;
 				$upd_task->store();
@@ -103,7 +104,7 @@ if (is_array($selected) && count( $selected )) {
 		}
 
 //Action: Move to Project
-		if ( isset($_POST['bulk_task_project']) && $bulk_task_project!='' && $bulk_task_project) {			
+		if ( isset($_POST['bulk_task_project']) && $bulk_task_project!='' && $bulk_task_project) {
 			if ($upd_task->task_id) {
 				$upd_task->task_project = $bulk_task_project;
 				//Set parent to self task
@@ -113,13 +114,13 @@ if (is_array($selected) && count( $selected )) {
 		}
 
 //Action: Change parent
-		if ( isset($_POST['bulk_task_parent']) && $bulk_task_parent!='') {			
+		if ( isset($_POST['bulk_task_parent']) && $bulk_task_parent!='') {
 			if ($upd_task->task_id) {
 				//If parent is self task
 				if ($bulk_task_parent=='0'){
 					$upd_task->task_parent = $key;
 					$upd_task->store();
-				//if not, then the task will be child to the selected parent					
+				//if not, then the task will be child to the selected parent
 				} else {
 					$upd_task->task_parent = $bulk_task_parent;
 					$upd_task->store();
@@ -128,13 +129,13 @@ if (is_array($selected) && count( $selected )) {
 		}
 
 //Action: Change dependency
-		if ( isset($_POST['bulk_task_dependency']) && $bulk_task_dependency!='') {			
+		if ( isset($_POST['bulk_task_dependency']) && $bulk_task_dependency!='') {
 			if ($upd_task->task_id) {
 				//If parent is self task
 				//print_r($bulk_task_dependency);die;
 				if ($bulk_task_dependency=='0'){
 					$upd_task->task_dynamic = 0;
-					$upd_task->store();				
+					$upd_task->store();
                               $q = new DBQuery;
                               $q->setDelete('task_dependencies');
                               $q->addWhere('dependencies_task_id='.$upd_task->task_id);
@@ -152,7 +153,7 @@ if (is_array($selected) && count( $selected )) {
             			$dep_task->load($bulk_task_dependency);
       			      if ($dep_task->task_id) {
       			            $dep_task->shiftDependentTasks();
-      			      }      			
+      			      }
 				}
 			}
 		}
@@ -188,7 +189,7 @@ if (is_array($selected) && count( $selected )) {
 		    if ($upd_task->task_id)
                        $upd_task->updateAssigned($bulk_task_assign,array($bulk_task_assign=>$bulk_task_assign_perc),false,false);
 		    if ($upd_task->task_project && $upd_task->task_id && $upd_task->task_notify)
-		    	     $upd_task->notify();		      
+		    	     $upd_task->notify();
 		}
 
 //Action: Unassign User
@@ -197,7 +198,7 @@ if (is_array($selected) && count( $selected )) {
 		    $upd_task->load($key);
 			if ($upd_task->task_id)
 				$upd_task->removeAssigned($bulk_task_unassign);
-			
+
 		}
 
 //Action: Other Actions
@@ -211,7 +212,7 @@ if (is_array($selected) && count( $selected )) {
 						$end_date = null;
 						$end_date = new CDate();
 						$upd_task->task_end_date = $end_date->format( FMT_DATETIME_MYSQL );
-					}						
+					}
 					$upd_task->store();
 		    	//Option 2 - Mark as milestone
 				} elseif ($bulk_task_other=='2') {

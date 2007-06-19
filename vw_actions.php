@@ -7,6 +7,8 @@ $stype = array(''=>'(Type)') + $type;
 $priority = dPgetsysval('TaskPriority');
 $spriority = array(''=>'(Priority)') + $priority;
 $stask_access = array(''=>'(Access)') + $task_access;
+$durntype = dPgetSysval('TaskDurationType');
+$sdurntype = array( ''=>'(Duration Type)') + $durntype;
 $sother = array(''=>'(Other Operations)','1'=>'Mark Tasks as Finished','8'=>'Mark Tasks as Active','9'=>'Mark Tasks as Inactive','2'=>'Mark Tasks as Milestones','3'=>'Mark Tasks as Non Milestone','4'=>'Mark Tasks as Dynamic','5'=>'Mark Tasks as Non Dynamic','6'=>'Add Task Reminder','7'=>'Remove Task Reminder','99'=>'Delete Tasks');
 
 //Pull all users
@@ -120,9 +122,10 @@ $spercent = arrayMerge( array( ''=>'(Progress)' ), $percent );
                                   <img src='./images/calendar.gif' width='24' height='12' alt='<?php echo $AppUI->_('Calendar');?>' border='0' />
                                   </a>
                   </td>
-                  <th width="15%" nowrap><?php echo $AppUI->_('Duration (Hours)');?>&nbsp;</th>
+                  <th width="15%" nowrap><?php echo $AppUI->_('Duration');?>&nbsp;</th>
                   <td width="130">
-                                  <input type='text' class='text' style='width:120px;text-align:right;' id='bulk_task_duration' name='bulk_task_duration' value='' />
+                                  <input type='text' class='text' style='width:120px;text-align:right;' id='bulk_task_duration' name='bulk_task_duration' value='' />&nbsp;
+								  <?php echo arraySelect( $sdurntype, 'bulk_task_durntype', 'style="width=120px" size="1" class="text"', '', true ); ?>
                   </td>
                   <td width="100%">&nbsp;</td>
             </tr>                                

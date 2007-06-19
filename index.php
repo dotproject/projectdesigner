@@ -97,7 +97,7 @@ if (!$project_id) {
             }
             $titleBlock->show();
 ?>
-            
+
             <script language="javascript">
             function submitIt() {
             	var f = document.prjFrm;
@@ -105,14 +105,14 @@ if (!$project_id) {
                   if (f.project_id.value == 0) {
                   	msg += "\n<?php echo $AppUI->_('You must select a project first', UI_OUTPUT_JS);?>";
                   	f.project_id.focus();
-                  } 
+                  }
 
                   if (msg.length < 1) {
                   	f.submit();
                   } else {
                   	alert(msg);
                   }
-            }            
+            }
             </script>
 
             <table border="1" cellpadding="4" cellspacing="0" width="100%" class="std">
@@ -135,7 +135,7 @@ if (!$project_id) {
       $canAddTasks = $perms->checkModule( 'tasks', 'add');
       $canEditTasks = $perms->checkModule( 'tasks', 'edit');
       $canDeleteTasks = $perms->checkModule( 'tasks', 'delete');
-      
+
       if (!$canReadProject) {
       	$AppUI->redirect( "m=public&a=access_denied" );
       }
@@ -380,7 +380,7 @@ function parseDate(val) {
 	var preferEuro=(arguments.length==2)?arguments[1]:false;
 	generalFormats=new Array('yyyyMMddHHmm', '<?php echo $cal_df ?>');
 	monthFirst=new Array();
-      dateFirst =new Array(); 	
+      dateFirst =new Array();
 //	generalFormats=new Array('yyyyMMddHHmm', 'NNN/dd/yyyy h:m a', 'NNN/dd/yyyy H:m', 'NNN/dd/yyyy hh:mm a', 'NNN/dd/yyyy HH:mm a', 'y-M-d','MMM d, y','MMM d,y','y-MMM-d','d-MMM-y','MMM d');
 //	monthFirst=new Array('M/d/y h:m','M-d-y h:m','M.d.y h:m','M/d/y hh:mm','M-d-y hh:mm','M.d.y hh:mm','M/d/y','M-d-y','M.d.y','MMM-d','M/d','M-d');
 //	dateFirst =new Array('d/M/y hh:mm','d-M-y hh:mm','d.M.y hh:mm','d/M/y h:m','d-M-y h:m','d.M.y h:m','d-MMM','d/M','d-M','d/M/y','d-M-y','d.M.y','d-MMM','d/M','d-M');
@@ -395,7 +395,7 @@ function parseDate(val) {
 		}
 	return null;
 	}
-      	
+
 function setDate( frm_name, f_date ) {
 	fld_date = eval( "document." + frm_name + "." + f_date );
 	fld_task_date = eval( "document." + frm_name + "." + "add_task_" + f_date );
@@ -404,7 +404,7 @@ function setDate( frm_name, f_date ) {
 	            alert('The Date/Time you typed does not match your prefered format, please retype.');
 	            fld_task_date.value = '';
 	            fld_date.style.backgroundColor = 'red';
-            } else {   
+            } else {
             	fld_task_date.value = formatDate(parseDate(fld_date.value), "yyyyMMddHHmm");
             	fld_date.value = formatDate(parseDate(fld_date.value), "<?php echo $cal_df ?>");
 	            fld_date.style.backgroundColor = '';
@@ -413,22 +413,25 @@ function setDate( frm_name, f_date ) {
 	                  start_date = fld_task_date;
 	                  end_date = eval( "document." + frm_name + "." + "add_task_" + f_date.replace("start_date","end_date") );
 	                  duration_fld = eval( "document." + frm_name + "." + "add_task_" + f_date.replace("start_date","duration") );
-                     } else { 
+	                  durntype_fld = eval( "document." + frm_name + "." + "add_task_" + f_date.replace("start_date","durntype") );
+                     } else {
 	                  end_date = fld_task_date;
 	                  start_date = eval( "document." + frm_name + "." + "add_task_" + f_date.replace("end_date","start_date") );
 	                  duration_fld = eval( "document." + frm_name + "." + "add_task_" + f_date.replace("end_date","duration") );
+	                  durntype_fld = eval( "document." + frm_name + "." + "add_task_" + f_date.replace("end_date","durntype") );
                      }
-	               calcDuration(document.editFrm, start_date, end_date, duration_fld);
-                  }   
+	               calcDuration(document.editFrm, start_date, end_date, duration_fld, durntype_fld);
+                  }
       	}
 	} else {
       	fld_task_date.value = "";
 	}
 }
 </script>
-<?php 
+<?php
 $priorities = dPgetsysval('TaskPriority');
 $types = dPgetsysval('TaskType');
+$durntype = dPgetSysVal('TaskDurationType');
 include_once( $AppUI->getModuleClass( 'tasks' ) );
 global $task_access;
 $extra = array(
@@ -441,12 +444,14 @@ $sel_priorities = arraySelect( $priorities, 'add_task_priority0', 'style="width:
 $sel_types = arraySelect( $types, 'add_task_type0', 'style="width:80px" class="text"', '' );
 $sel_access = arraySelect( $task_access, 'add_task_access0', 'style="width:80px" class="text"', '' );
 $sel_extra = arraySelect( $extra, 'add_task_extra0', 'style="width:80px" class="text"', '' );
+$sel_durntype = arraySelect( $durntype, 'add_task_durntype0', 'style="width:80px" class="text"', '', true );
 ?>
 <script language="javascript">
 var sel_priorities = "<?php echo str_replace(chr(10),'', str_replace('"', "'", $sel_priorities)); ?>";
 var sel_types = "<?php echo str_replace(chr(10),'', str_replace('"', "'", $sel_types)); ?>";
 var sel_access = "<?php echo str_replace(chr(10),'', str_replace('"', "'", $sel_access)); ?>";
 var sel_extra = "<?php echo str_replace(chr(10),'', str_replace('"', "'", $sel_extra)); ?>";
+var sel_durntype = "<?php echo str_replace(chr(10), '', str_replace('"', "'", $sel_durntype)); ?>";
 
 function addComponent() {
       var form = document.editFrm;
@@ -464,6 +469,9 @@ function addComponent() {
       access = access.replace('access0','access_'+line_nr);
       extra = sel_extra.replace('extra0','extra_'+line_nr);
       extra = extra.replace('extra0','extra_'+line_nr);
+	 durntype = sel_durntype.replace('durntype0', 'durntype_'+line_nr);
+	 durntype = durntype.replace('durntype0', 'durntype_'+line_nr);
+
       eval('oldType_'+line_nr+'=""');
 
       var trIdName = 'component'+li+'_';
@@ -481,7 +489,7 @@ function addComponent() {
       htmltxt = "";
 	htmltxt +="<input type='hidden' id='add_task_line_"+line_nr+"' name='add_task_line_"+line_nr+"' value='"+line_nr+"' />";
 	htmltxt +="<input type='text' class='text' style='width:200px;' name='add_task_name_"+line_nr+"' value='' />";
-	htmltxt +="&nbsp;<a href='#component"+li+"_desc' onClick=\"expand_colapse('component"+li+"_desc', 'tblProjects')\"><img id='component"+li+"_desc_expand' src='./images/icons/expand.gif' title='<?php echo $AppUI->_('Edit Task Description');?>' alt='<?php echo $AppUI->_('Edit Task Description');?>' width='12' height='12' border='0'><img id='component"+li+"_desc_collapse' src='./images/icons/collapse.gif' width='12' height='12' border='0' style='display:none'></a>";		
+	htmltxt +="&nbsp;<a href='#component"+li+"_desc' onClick=\"expand_colapse('component"+li+"_desc', 'tblProjects')\"><img id='component"+li+"_desc_expand' src='./images/icons/expand.gif' title='<?php echo $AppUI->_('Edit Task Description');?>' alt='<?php echo $AppUI->_('Edit Task Description');?>' width='12' height='12' border='0'><img id='component"+li+"_desc_collapse' src='./images/icons/collapse.gif' width='12' height='12' border='0' style='display:none'></a>";
 	oCell.innerHTML =htmltxt;
       newtr.appendChild(oCell);
       oCell = document.createElement("td");
@@ -506,6 +514,7 @@ function addComponent() {
       oCell = document.createElement("td");
       htmltxt = "";
 	htmltxt +="<input type='text' class='text' style='width:40px;text-align:right;' id='add_task_duration_"+line_nr+"' name='add_task_duration_"+line_nr+"' value='1' />";
+	htmltxt += "&nbsp;"+durntype ;
 	oCell.innerHTML =htmltxt;
       newtr.appendChild(oCell);
       ni.appendChild(newtr);
@@ -551,7 +560,8 @@ function addComponent() {
       end_date = eval( "document.editFrm.add_task_end_date_"+line_nr );
       start_date = eval( "document.editFrm.add_task_start_date_"+line_nr );
       duration_fld = eval( "document.editFrm.add_task_duration_"+line_nr );
-      calcDuration(document.editFrm, start_date, end_date, duration_fld);
+      durntype_fld = eval( "document.editFrm.add_task_durntype_"+line_nr );
+      calcDuration(document.editFrm, start_date, end_date, duration_fld, durntype_fld);
 }
 
 function removeComponent(tr_id) {
@@ -614,7 +624,7 @@ var oldProj = "<?php echo $obj->project_name.':';?>";
                   echo '<a href="#fp" name="fp" style="display:block" onClick="expand_colapse(\'project\', \'tblProjects\')">'
            	?>
             	<?php
-                        echo '<img id="project_expand" src="./images/icons/expand.gif" width="12" height="12" border="0" '.(isset($view_options[0]['pd_option_view_project']) ? ($view_options[0]['pd_option_view_project'] ? 'style="display:none"' : 'style="display:"') : 'style="display:none"').'><img id="project_collapse" src="./images/icons/collapse.gif" width="12" height="12" border="0" '.(isset($view_options[0]['pd_option_view_project']) ? ($view_options[0]['pd_option_view_project'] ? 'style="display:"' : 'style="display:none"') : 'style="display:"').'>';		
+                        echo '<img id="project_expand" src="./images/icons/expand.gif" width="12" height="12" border="0" '.(isset($view_options[0]['pd_option_view_project']) ? ($view_options[0]['pd_option_view_project'] ? 'style="display:none"' : 'style="display:"') : 'style="display:none"').'><img id="project_collapse" src="./images/icons/collapse.gif" width="12" height="12" border="0" '.(isset($view_options[0]['pd_option_view_project']) ? ($view_options[0]['pd_option_view_project'] ? 'style="display:"' : 'style="display:none"') : 'style="display:"').'>';
             	?>
            	<?php
                   echo '</a>'
@@ -664,7 +674,7 @@ var oldProj = "<?php echo $obj->project_name.':';?>";
             </tr>
       	</table>
 	</td>
-</tr>            
+</tr>
 <tr id="gantt" <?php echo (isset($view_options[0]['pd_option_view_gantt']) ? ($view_options[0]['pd_option_view_gantt'] ? 'style="visibility:visible;display:"' : 'style="visibility:collapse;display:none"') : 'style="visibility:visible;display:"');?>>
 	<td colspan="2" class="hilite">
 	<?php
@@ -708,7 +718,7 @@ var oldProj = "<?php echo $obj->project_name.':';?>";
             </tr>
       	</table>
 	</td>
-</tr>            
+</tr>
 <tr id="tasks" <?php echo (isset($view_options[0]['pd_option_view_tasks']) ? ($view_options[0]['pd_option_view_tasks'] ? 'style="visibility:visible;display:"' : 'style="visibility:collapse;display:none"') : 'style="visibility:visible;display:"');?>>
 	<td colspan="2" class="hilite">
 	<?php
@@ -752,12 +762,12 @@ var oldProj = "<?php echo $obj->project_name.':';?>";
             </tr>
       	</table>
 	</td>
-</tr>            
+</tr>
 <tr id="actions" <?php echo (isset($view_options[0]['pd_option_view_actions']) ? ($view_options[0]['pd_option_view_actions'] ? 'style="visibility:visible;display:"' : 'style="visibility:collapse;display:none"') : 'style="visibility:visible;display:"');?>>
 	<td colspan="2" class="hilite">
 	<?php
             if ($canEditTasks) {
-                  require(dPgetConfig('root_dir')."/modules/projectdesigner/vw_actions.php");
+                 require dPgetConfig('root_dir')."/modules/projectdesigner/vw_actions.php";
             } else {
                   echo $AppUI->_('You do not have permission to edit tasks');
             }
@@ -796,12 +806,12 @@ var oldProj = "<?php echo $obj->project_name.':';?>";
             </tr>
       	</table>
 	</td>
-</tr>            
+</tr>
 <tr id="addtsks" <?php echo (isset($view_options[0]['pd_option_view_addtasks']) ? ($view_options[0]['pd_option_view_addtasks'] ? 'style="visibility:visible;display:"' : 'style="visibility:collapse;display:none"') : 'style="visibility:visible;display:"');?>>
 	<td colspan="2" class="hilite">
 	<?php
             if ($canAddTasks) {
-                  require(dPgetConfig('root_dir')."/modules/projectdesigner/vw_addtasks.php");
+                 require dPgetConfig('root_dir')."/modules/projectdesigner/vw_addtasks.php";
             } else {
                   echo $AppUI->_('You do not have permission to add tasks');
             }
@@ -840,14 +850,14 @@ var oldProj = "<?php echo $obj->project_name.':';?>";
            	?>
       	</table>
 	</td>
-</tr>            
+</tr>
 <tr id="files" <?php echo (isset($view_options[0]['pd_option_view_files']) ? ($view_options[0]['pd_option_view_files'] ? 'style="visibility:visible;display:"' : 'style="visibility:collapse;display:none"') : 'style="visibility:visible;display:"');?>>
 	<td colspan="2" class="hilite">
 	<?php
 	      //Permission check here
             $canViewFiles = $perms->checkModule( 'files', 'view');
             if ($canViewFiles) {
-                  require(dPgetConfig('root_dir')."/modules/projectdesigner/vw_files.php");
+                 require dPgetConfig('root_dir')."/modules/projectdesigner/vw_files.php";
             } else {
                   echo $AppUI->_('You do not have permission to view files');
             }

@@ -53,26 +53,26 @@ $pinned_only = intval( dPgetParam( $_GET, 'pinned', 0) );
 if (isset($_GET['pin'])) {
     $pin = intval( dPgetParam( $_GET, 'pin', 0 ) );
     $msg = '';
-    
+
     // load the record data
     if($pin) {
         $q->addTable('user_task_pin');
         $q->addInsert('user_id', $AppUI->user_id);
         $q->addInsert('task_id', $task_id);
-    } 
+    }
     else {
         $q->setDelete('user_task_pin');
         $q->addWhere('user_id = ' . $AppUI->user_id);
         $q->addWhere('task_id = ' . $task_id);
     }
-    
+
     if ( !$q->exec() ) {
         $AppUI->setMsg( 'ins/del err', UI_MSG_ERROR, true );
     }
     else {
         $q->clear();
     }
-    
+
     $AppUI->redirect('', -1);
 }
 else if($task_id > 0) {
@@ -145,7 +145,7 @@ if ($canViewTasks) {
     while ($row = db_fetch_assoc( $prc )) {
         $projects[$row['project_id']] = $row;
     }
-    
+
     $prc2 = db_exec( $psql2 );
     echo db_error();
     while ($row2 = db_fetch_assoc( $prc2 )) {
@@ -223,7 +223,7 @@ foreach ($tasks as $row) {
 	$q->addWhere('ut.task_id = ' . $row['task_id']);
 	$q->addGroup('ut.user_id');
 	$q->addOrder('perc_assignment desc, user_username');
-	
+
 	$assigned_users = array ();
 	$row['task_assigned_users'] = $q->loadList();
 	$q->addQuery('count(*) as children');
@@ -238,7 +238,7 @@ foreach ($tasks as $row) {
 	$row['task_number'] = $i;
 	$row['node_id'] = 'node_'.$i.'-' . $row['task_id'];
 	if (strpos($row['task_duration'], '.') && $row['task_duration_type'] == 1) {
-		$row['task_duration'] = floor($row['task_duration']) . ':' 
+		$row['task_duration'] = floor($row['task_duration']) . ':'
             . round(60 * ($row['task_duration'] - floor($row['task_duration'])));
     }
 	//pull the final task row into array
@@ -253,7 +253,7 @@ foreach($projects as $k => $p) {
 	$done = array();
 	if ( $task_sort_item1 != '' ) {
 		if ( $task_sort_item2 != '' && $task_sort_item1 != $task_sort_item2 ) {
-			$p['tasks'] = array_csort($p['tasks'], 
+			$p['tasks'] = array_csort($p['tasks'],
                                       $task_sort_item1, $task_sort_order1, $task_sort_type1,
                                       $task_sort_item2, $task_sort_order2, $task_sort_type2 );
         }
@@ -262,7 +262,7 @@ foreach($projects as $k => $p) {
         }
 	}
     else {
-		/* we have to calculate the end_date via start_date+duration for 
+		/* we have to calculate the end_date via start_date+duration for
 		** end='0000-00-00 00:00:00' if array_csort function is not used
 		** as it is normally done in array_csort function in order to economise
 		** cpu time as we have to go through the array there anyway
@@ -314,7 +314,7 @@ foreach ($projects as $k => $p) {
         if ($tnums > 0 || $project_id == $p['project_id']) {
 //echo '<pre>'; print_r($p); echo '</pre>';
                 global $done;
-                $done = array();	
+                $done = array();
 
                 if ( $task_sort_item1 != "" )
                 {
@@ -324,15 +324,15 @@ foreach ($projects as $k => $p) {
                         else $p['tasks'] = array_csort($p['tasks'], $task_sort_item1, $task_sort_order1, $task_sort_type1 );
                 } else {
 
-			/* we have to calculate the end_date via start_date+duration for 
+			/* we have to calculate the end_date via start_date+duration for
 			** end='0000-00-00 00:00:00' if array_csort function is not used
 			** as it is normally done in array_csort function in order to economise
 			** cpu time as we have to go through the array there anyway
 			*/
 			for ($j=0; $j < count($p['tasks']); $j++) {
-					
+
 				if ( $p['tasks'][$j]['task_end_date'] == '0000-00-00 00:00:00' ) {
-					
+
 					 $p['tasks'][$j]['task_end_date'] = calcEndByStartAndDuration($p['tasks'][$j]);
 				}
 			}
@@ -349,7 +349,7 @@ foreach ($projects as $k => $p) {
                                     findchild_pd( $p['tasks'], $t["task_id"] );
                                 }
                         }
-												
+
 				if ($search_text) {
                               if (strpos($t['task_name'], $search_text) !== false || strpos($t['task_description'], $search_text) !== false)
       					showtask_pd($t, 1, false);
@@ -367,7 +367,7 @@ foreach ($projects as $k => $p) {
                         }
                 }
         }
-}      
+}
 
 $AppUI->setState("tasks_opened", $tasks_opened);
 ?>
