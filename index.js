@@ -637,3 +637,8 @@ function select_box(box, id, form_name){
             removeBulkComponent(id);
       }
 }
+
+function toggle_users(id){
+  var element = document.getElementById(id);
+  element.style.display = (element.style.display == '' || element.style.display == "none") ? "inline" : "none";
+}
