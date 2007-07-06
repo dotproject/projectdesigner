@@ -1,4 +1,4 @@
-<?php /* PROJECTDESIGNER $Id: index.php,v 1.0 2006/10/17 21:48:15 pedroix Exp $ */
+<?php /* PROJECTDESIGNER $Id: printproject.php,v 1.1 2007/03/15 18:16:42 pedroix Exp $ */
 global $AppUI, $dPconfig;
 // check permissions for this module
 $perms =& $AppUI->acl();
@@ -246,7 +246,7 @@ TABLE.prjprint TR {
             	</td>
         <!--	    <td width="22" align="right">
 				<a href="#" onclick="var img=document.getElementById('imghd'); img.style.display='none'; window.print(); window.close();">
-      			<img id="imghd" src="./modules/projectdesigner/images/printer.png" border="0" width="22" heigth="22" alt="print project" title="print project"/>
+      			<img id="imghd" src="./modules/projectdesigner/images/printer.png" border="0" width="22" height="22" alt="print project" title="print project"/>
       			</a>
       			</td>-->  
       	</tr>

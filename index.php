@@ -1,4 +1,4 @@
-<?php /* PROJECTDESIGNER $Id: index.php,v 1.1 2007/03/15 18:16:42 pedroix Exp $ */
+<?php /* PROJECTDESIGNER $Id: index.php,v 1.3 2007/06/19 11:43:05 pedroix Exp $ */
 /*  Copyright (c) 2007 Pedro A. (dotProject Development Team Member)
     THIS MODULE WAS SPONSORED BY DUSTIN OF PURYEAR-IT.COM
 
@@ -312,23 +312,23 @@ if (!$project_id) {
       }
      	$titleBlock->addCell();
       $titleBlock->addCell("<a href=\"#\" onclick =\"window.open('index.php?m=projectdesigner&a=printproject&dialog=1&suppressHeaders=1&project_id=$project_id', 'printproject','width=1200, height=600, menubar=1, scrollbars=1')\">
-      		<img src=\"./modules/projectdesigner/images/printer.png\" border=\"0\" width=\"22\" heigth\"22\" alt=\"print project\" title=\"print project\"/>
+      		<img src=\"./modules/projectdesigner/images/printer.png\" border=\"0\" width=\"22\" height=\"22\" alt=\"print project\" title=\"print project\"/>
       		</a>
       		"
       	);
-      $titleBlock->addCell("<a href=\"#\" onclick =\"window.open('index.php?m=projectdesigner&a=printproject&dialog=1&suppressHeaders=1&project_id=$project_id', 'printproject','width=1200, height=600, menubar=1, scrollbars=1')\">client report</a>");
+//      $titleBlock->addCell("<a href=\"#\" onclick =\"window.open('index.php?m=projectdesigner&a=printproject&dialog=1&suppressHeaders=1&project_id=$project_id', 'printproject','width=1200, height=600, menubar=1, scrollbars=1')\">client report</a>");
       $titleBlock->addCell("<a href=\"#\" onclick =\"expandAll()\">
-      		<img src=\"./modules/projectdesigner/images/down.png\" border=\"0\" width=\"22\" heigth\"22\" alt=\"expand all panels\" title=\"expand all panels\"/>
+      		<img src=\"./modules/projectdesigner/images/down.png\" border=\"0\" width=\"22\" height=\"22\" alt=\"expand all panels\" title=\"expand all panels\"/>
       		</a>
       		"
       	);
       $titleBlock->addCell("<a href=\"#\" onclick =\"collapseAll()\">
-      		<img src=\"./modules/projectdesigner/images/up.png\" border=\"0\" width=\"22\" heigth\"22\" alt=\"collapse all panels\" title=\"collpase all panels\"/>
+      		<img src=\"./modules/projectdesigner/images/up.png\" border=\"0\" width=\"22\" height=\"22\" alt=\"collapse all panels\" title=\"collpase all panels\"/>
       		</a>
       		"
       	);
       $titleBlock->addCell("<a href=\"#\" onclick =\"document.frmWorkspace.submit()\">
-      		<img src=\"./modules/projectdesigner/images/filesave.png\" border=\"0\" width=\"22\" heigth\"22\" alt=\"save your workspace\" title=\"save your workspace\"/>
+      		<img src=\"./modules/projectdesigner/images/filesave.png\" border=\"0\" width=\"22\" height=\"22\" alt=\"save your workspace\" title=\"save your workspace\"/>
       		</a>
       		"
       	);
