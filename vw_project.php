@@ -91,7 +91,7 @@
 		</tr>
 <!--		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Active');?>:</td>
-			<td class="hilite" width="100%"><?php echo $obj->project_active ? $AppUI->_('Yes') : $AppUI->_('No');?></td>
+			<td class="hilite" width="100%"><?php echo $obj->project_status == 7 ? $AppUI->_('Yes') : $AppUI->_('No');?></td>
 		</tr>-->
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Worked Hours');?>:</td>

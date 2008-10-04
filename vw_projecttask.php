@@ -29,9 +29,9 @@
 		</tr>
 <!--		<tr>
 			<td align="right" nowrap><strong><?php echo $AppUI->_('Active');?>:&nbsp;</strong></td>
-			<td class="hilite" width="100%"><?php echo $obj->project_active ? $AppUI->_('Yes') : $AppUI->_('No');?></td>
+			<td class="hilite" width="100%"><?php echo $obj->project_status == 7 ? $AppUI->_('Yes') : $AppUI->_('No');?></td>
 		</tr>-->
-	<?php /* TASKS $Id: tasks.php,v 1.151 2006/08/16 16:12:09 caseydk Exp $ */
+	<?php /* TASKS $Id: vw_projecttask.php,v 1.1 2007/03/15 18:16:42 pedroix Exp $ */
 GLOBAL $m, $a, $project_id, $f, $task_status, $min_view, $query_string, $durnTypes, $tpl;
 GLOBAL $task_sort_item1, $task_sort_type1, $task_sort_order1;
 GLOBAL $task_sort_item2, $task_sort_type2, $task_sort_order2;

@@ -1,4 +1,4 @@
-<?php /* PROJECTDESIGNER $Id: index.php,v 1.3 2007/06/19 11:43:05 pedroix Exp $ */
+<?php /* PROJECTDESIGNER $Id: index.php,v 1.4 2007/07/06 11:38:13 pedroix Exp $ */
 /*  Copyright (c) 2007 Pedro A. (dotProject Development Team Member)
     THIS MODULE WAS SPONSORED BY DUSTIN OF PURYEAR-IT.COM
 
@@ -118,9 +118,9 @@ if (!$project_id) {
             <table border="1" cellpadding="4" cellspacing="0" width="100%" class="std">
             <form name="prjFrm" action="?m=projectdesigner" method="post">
             <tr>
-            	<td nowrap style="border: outset #eeeeee 1px;background-color:#fffff" >
-            		<font color="<?php echo bestColor( '#ffffff' ); ?>">
-            			<strong><?php echo $AppUI->_('Project');?>: <?php echo arraySelect( $projects, 'project_id','onchange="submitIt()" class="text" style="width:500px"', 0  );?></strong>
+            	<td nowrap="nowrap" style="border: outset #eeeeee 1px;background-color:#fffff" >
+            		<font color="<?php echo bestColor('#ffffff'); ?>">
+            			<strong><?php echo $AppUI->_('Project'); ?>: <?php echo arraySelect( $projects, 'project_id','onchange="submitIt()" class="text" style="width:500px"', 0  );?></strong>
             		</font>
             	</td>
             </tr>            

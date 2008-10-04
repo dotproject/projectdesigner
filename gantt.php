@@ -1,8 +1,8 @@
-<?php /* PROJECTDESIGNER $Id: gantt.php,v 1.48.2.13 2006/06/05 12:58:57 gregorerhardt Exp $ */
+<?php /* PROJECTDESIGNER $Id: gantt.php,v 1.1 2007/03/15 18:16:42 pedroix Exp $ */
 
 /*
  * Gantt.php - by J. Christopher Pereira
- * PROJECTDESIGNER $Id: gantt.php,v 1.48.2.13 2006/06/05 12:58:57 gregorerhardt Exp $
+ * PROJECTDESIGNER $Id: gantt.php,v 1.1 2007/03/15 18:16:42 pedroix Exp $
  */
 
 include ($dPconfig['root_dir'].'/lib/jpgraph/src/jpgraph.php');
@@ -185,9 +185,7 @@ if ($jpLocale) {
 if ($start_date && $end_date) {
         $graph->SetDateRange( $start_date, $end_date );
 }
-if (is_file( TTF_DIR.'arialbd.ttf' )){
-        $graph->scale->actinfo->SetFont(FF_ARIAL);
-}
+$graph->scale->actinfo->SetFont(FF_CUSTOM, FS_NORMAL, 8);
 $graph->scale->actinfo->vgrid->SetColor('gray');
 $graph->scale->actinfo->SetColor('darkgray');
 
@@ -209,8 +207,7 @@ $graph->scale->tableTitle->Set($projects[$project_id]['project_name']);
 
 // Use TTF font if it exists
 // try commenting out the following two lines if gantt charts do not display
-if (is_file( TTF_DIR.'arialbd.ttf' ))
-        $graph->scale->tableTitle->SetFont(FF_ARIAL,FS_BOLD,12);
+$graph->scale->tableTitle->SetFont(FF_CUSTOM, FS_BOLD, 12);
 $graph->scale->SetTableTitleBackground('#'.$projects[$project_id]['project_color_identifier']);
 $font_color = bestColor('#'.$projects[$project_id]['project_color_identifier']);
 $graph->scale->tableTitle->SetColor($font_color);
@@ -403,7 +400,7 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
         	       $bar  = new MileStone ($row++,array($name, $pname, '', substr($s, 0, 10), substr($s, 0, 10)) , $a['task_start_date'], $s);
 		    else 
                    $bar  = new MileStone ($row++,array($name, '', substr($s, 0, 10), substr($s, 0, 10)) , $a['task_start_date'], $s);
-                $bar->title->SetFont(FF_ARIAL,FS_NORMAL,8);
+                $bar->title->SetFont(FF_CUSTOM, FS_NORMAL, 8);
                 //caption of milestone should be date
                 if ($showLabels=='1') {
                         $caption = $start->format($df);
@@ -460,13 +457,9 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
                 else
 					$bar = new GanttBar($row++, array($name, $dur, $startdate->format($df), $enddate->format($df)), substr($start, 2, 8), substr($end, 2, 8), $cap, $a['task_dynamic'] == 1 ? 0.1 : 0.6);
                 $bar->progress->Set(min(($progress/100),1));
-                if (is_file( TTF_DIR.'arialbd.ttf' )) {
-                        $bar->title->SetFont(FF_ARIAL,FS_NORMAL,8);
-                }
+                $bar->title->SetFont(FF_CUSTOM,FS_NORMAL,8);
             if($a['task_dynamic'] == 1){
-                    if (is_file( TTF_DIR.'arialbd.ttf' )){
-                        $bar->title->SetFont(FF_ARIAL,FS_BOLD, 8);
-                }
+            $bar->title->SetFont(FF_CUSTOM,FS_BOLD, 8);
                     $bar->rightMark->Show();
             $bar->rightMark->SetType(MARK_RIGHTTRIANGLE);
             $bar->rightMark->SetWidth(3);
@@ -515,9 +508,7 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 }
 $today = date('y-m-d');
 $vline = new GanttVLine($today, $AppUI->_('Today', UI_OUTPUT_RAW));
-if (is_file( TTF_DIR.'arialbd.ttf' )) {
-        $vline->title->SetFont(FF_ARIAL,FS_BOLD,10);
-}
+$vline->title->SetFont(FF_CUSTOM,FS_BOLD,10);
 $graph->Add($vline);
 $graph->Stroke();
 ?>
