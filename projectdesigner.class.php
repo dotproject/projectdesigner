@@ -1,4 +1,4 @@
-<?php /* PROJECTDESIGNER $Id: projectdesigner.class.php,v 1.0 2006/10/16 08:35:09 pedroix Exp $ */
+<?php /* PROJECTDESIGNER $Id: projectdesigner.class.php,v 1.1 2007/03/15 18:16:42 pedroix Exp $ */
 
 //Lets require the main classes needed
 include_once("./modules/projectdesigner/config.php");
@@ -209,11 +209,11 @@ function showtask_pd( &$a, $level=0, $is_opened = true, $today_view = false) {
         $s .= "</td>";
 // access
         $s .= "\n\t<td nowrap='nowrap'>";
-        $s .= substr($task_access[$a["task_access"]],0,3);
+        $s .= '<abbr title="'.$task_access[$a['task_access']].'">'.substr($task_access[$a["task_access"]],0,3).'</abbr>';
         $s .= "</td>";
 // type
         $s .= "\n\t<td nowrap='nowrap'>";
-        $s .= substr($types[$a["task_type"]],0,3);
+        $s .= '<abbr title="'.$types[$a['task_type']].'">'.substr($types[$a["task_type"]],0,3).'</abbr>';
         $s .= "</td>";
 // type
         $s .= "\n\t<td nowrap='nowrap'>";
