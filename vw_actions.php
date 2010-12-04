@@ -29,7 +29,7 @@ $sassign = array(''=>'(Assign User)') + $users;
 $sunassign = array(''=>'(Unassign User)') + $users;
 
 $obj =& new CTask;
-$allowedTasks = $obj->getAllowedSQL($AppUI->user_id, 'tasks.task_id');
+$allowedTasks = $obj->getAllowedSQL($AppUI->user_id, 't.task_id');
 
 $obj->load($task_id);
 $task_project = $project_id ? $project_id : ($obj->task_project ? $obj->task_project : 0);

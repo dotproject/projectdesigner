@@ -1,4 +1,4 @@
-<?php /* PROJECTDESIGNER $Id: index.php,v 1.4 2007/07/06 11:38:13 pedroix Exp $ */
+<?php /* PROJECTDESIGNER $Id: index.php,v 1.5 2008/10/04 15:38:32 theideaman Exp $ */
 /*  Copyright (c) 2007 Pedro A. (dotProject Development Team Member)
     THIS MODULE WAS SPONSORED BY DUSTIN OF PURYEAR-IT.COM
 
@@ -164,8 +164,8 @@ if (!$project_id) {
       
       $q  = new DBQuery;
       //check that project has tasks; otherwise run seperate query
-      $q->addTable('tasks');
-      $q->addQuery("COUNT(distinct tasks.task_id) AS total_tasks");
+      $q->addTable('tasks', 't');
+      $q->addQuery("COUNT(distinct t.task_id) AS total_tasks");
       $q->addWhere('task_project = '.$project_id);
       $hasTasks = $q->loadResult();
       $q->clear();
@@ -173,8 +173,8 @@ if (!$project_id) {
       // load the record data
       // GJB: Note that we have to special case duration type 24 and this refers to the hours in a day, NOT 24 hours
       if ($hasTasks) { 
-          $q->addTable('projects');
-          $q->addQuery("company_name, CONCAT_WS(' ',contact_first_name,contact_last_name) user_name, projects.*,"
+          $q->addTable('projects', 'pr');
+          $q->addQuery("company_name, CONCAT_WS(' ',contact_first_name,contact_last_name) user_name, pr.*,"
                        ." SUM(t1.task_duration * t1.task_percent_complete"
                        ." * IF(t1.task_duration_type = 24, {$working_hours}, t1.task_duration_type))"
                        ." / SUM(t1.task_duration * IF(t1.task_duration_type = 24, {$working_hours}, t1.task_duration_type))"
@@ -182,13 +182,13 @@ if (!$project_id) {
           $q->addJoin('companies', 'com', 'company_id = project_company');
           $q->addJoin('users', 'u', 'user_id = project_owner');
           $q->addJoin('contacts', 'con', 'contact_id = user_contact');
-          $q->addJoin('tasks', 't1', 'projects.project_id = t1.task_project');
+          $q->addJoin('tasks', 't1', 'pr.project_id = t1.task_project');
           $q->addWhere('project_id = '.$project_id .' AND t1.task_id = t1.task_parent');
           $q->addGroup('project_id');
           $sql = $q->prepare();
       } else {
-          $q->addTable('projects');
-          $q->addQuery("company_name, CONCAT_WS(' ',contact_first_name,contact_last_name) user_name, projects.*, "
+          $q->addTable('projects', 'pr');
+          $q->addQuery("company_name, CONCAT_WS(' ',contact_first_name,contact_last_name) user_name, pr.*, "
                        ."(0.0) AS project_percent_complete");
           $q->addJoin('companies', 'com', 'company_id = project_company');
           $q->addJoin('users', 'u', 'user_id = project_owner');

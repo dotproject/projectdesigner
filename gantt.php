@@ -1,8 +1,8 @@
-<?php /* PROJECTDESIGNER $Id: gantt.php,v 1.1 2007/03/15 18:16:42 pedroix Exp $ */
+<?php /* PROJECTDESIGNER $Id: gantt.php,v 1.2 2008/10/04 15:38:32 theideaman Exp $ */
 
 /*
  * Gantt.php - by J. Christopher Pereira
- * PROJECTDESIGNER $Id: gantt.php,v 1.1 2007/03/15 18:16:42 pedroix Exp $
+ * PROJECTDESIGNER $Id: gantt.php,v 1.2 2008/10/04 15:38:32 theideaman Exp $
  */
 
 include ($dPconfig['root_dir'].'/lib/jpgraph/src/jpgraph.php');
@@ -24,9 +24,9 @@ $criticalTasksInverted = ($project_id > 0) ? getCriticalTasksInverted($project_i
 // pull valid projects and their percent complete information
 
 $q = new DBQuery;
-$q->addTable('projects');
+$q->addTable('projects', 'p');
 $q->addQuery('project_id, project_color_identifier, project_name, project_start_date, project_end_date');
-$q->addJoin('tasks', 't1', 'projects.project_id = t1.task_project');
+$q->addJoin('tasks', 't1', 'p.project_id = t1.task_project');
 $q->addWhere('project_status != 7');
 $q->addGroup('project_id');
 $q->addOrder('project_name');

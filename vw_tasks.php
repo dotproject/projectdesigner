@@ -1,4 +1,4 @@
-<?php /* TASKS $Id: tasks.php,v 1.151 2006/08/16 16:12:09 caseydk Exp $ */
+<?php /* TASKS $Id: vw_tasks.php,v 1.2 2007/06/19 11:43:05 pedroix Exp $ */
 GLOBAL $m, $a, $project_id, $f, $task_status, $min_view, $query_string, $durnTypes, $tpl;
 GLOBAL $task_sort_item1, $task_sort_type1, $task_sort_order1;
 GLOBAL $task_sort_item2, $task_sort_type2, $task_sort_order2;
@@ -122,8 +122,8 @@ $q->addQuery('SUM(task_duration * task_percent_complete * IF(task_duration_type 
              .', task_duration_type)) / SUM(task_duration * IF(task_duration_type = 24, '.$working_hours
              .', task_duration_type)) AS project_percent_complete');
 $q->addQuery('company_name');
-$q->addTable('projects');
-$q->leftJoin('tasks', 't1', 'projects.project_id = t1.task_project');
+$q->addTable('projects','pr');
+$q->leftJoin('tasks', 't1', 'pr.project_id = t1.task_project');
 $q->leftJoin('companies', 'c', 'company_id = project_company');
 $q->addWhere('t1.task_id = t1.task_parent');
 $q->addWhere('project_id='.$project_id);
@@ -154,9 +154,9 @@ if ($canViewTasks) {
     }
 }
 
-$q->addQuery('tasks.task_id, task_parent, task_name');
+$q->addQuery('t.task_id, task_parent, task_name');
 $q->addQuery('task_start_date, task_end_date, task_dynamic');
-$q->addQuery('count(tasks.task_parent) as children');
+$q->addQuery('count(t.task_parent) as children');
 $q->addQuery('task_pinned, pin.user_id as pin_user');
 $q->addQuery('task_priority, task_percent_complete');
 $q->addQuery('task_duration, task_duration_type');
@@ -172,22 +172,22 @@ $q->addQuery('count(distinct f.file_task) as file_count');
 $q->addQuery('tlog.task_log_problem');
 $q->addQuery('evtq.queue_id');
 
-$q->addTable('tasks');
+$q->addTable('tasks','t');
 $mods = $AppUI->getActiveModules();
 if (!empty($mods['history']) && !getDenyRead('history')) {
     $q->addQuery('MAX(history_date) as last_update');
-    $q->leftJoin('history', 'h', 'history_item = tasks.task_id AND history_table=\'tasks\'');
+    $q->leftJoin('history', 'h', 'history_item = t.task_id AND history_table=\'tasks\'');
 }
 $q->leftJoin('projects', 'p', 'p.project_id = task_project');
 $q->leftJoin('users', 'usernames', 'task_owner = usernames.user_id');
-$q->leftJoin('user_tasks', 'ut', 'ut.task_id = tasks.task_id');
+$q->leftJoin('user_tasks', 'ut', 'ut.task_id = t.task_id');
 $q->leftJoin('users', 'assignees', 'assignees.user_id = ut.user_id');
 $q->leftJoin('contacts', 'co', 'co.contact_id = usernames.user_contact');
-$q->leftJoin('task_log', 'tlog', 'tlog.task_log_task = tasks.task_id AND tlog.task_log_problem > 0');
-$q->leftJoin('files', 'f', 'tasks.task_id = f.file_task');
-$q->leftJoin('user_task_pin', 'pin', 'tasks.task_id = pin.task_id AND pin.user_id = ' . $AppUI->user_id);
+$q->leftJoin('task_log', 'tlog', 'tlog.task_log_task = t.task_id AND tlog.task_log_problem > 0');
+$q->leftJoin('files', 'f', 't.task_id = f.file_task');
+$q->leftJoin('user_task_pin', 'pin', 't.task_id = pin.task_id AND pin.user_id = ' . $AppUI->user_id);
 //$user_id = $user_id ? $user_id : $AppUI->user_id;
-$q->leftJoin('event_queue', 'evtq', 'tasks.task_id = evtq.queue_origin_id AND evtq.queue_module = "tasks"');
+$q->leftJoin('event_queue', 'evtq', 't.task_id = evtq.queue_origin_id AND evtq.queue_module = "tasks"');
 
 //if ($f != 'children') {
 //	$q->addWhere('tasks.task_id = task_parent');
@@ -201,11 +201,11 @@ if (count($allowedProjects)) {
 	$q->addWhere($allowedProjects);
 }
 $obj =& new CTask;
-$allowedTasks = $obj->getAllowedSQL($AppUI->user_id, 'tasks.task_id');
+$allowedTasks = $obj->getAllowedSQL($AppUI->user_id, 't.task_id');
 if ( count($allowedTasks)) {
 	$q->addWhere($allowedTasks);
 }
-$q->addGroup('tasks.task_id');
+$q->addGroup('t.task_id');
 $q->addOrder('project_id, task_start_date');
 if ($canViewTasks) {
 	$tasks = $q->loadList();
